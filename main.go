@@ -1,13 +1,22 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"milkyway/internal/routes"
+	"log"
+	"milkyway/internal/controllers"
+	"net/http"
 )
 
 func main() {
+	controllers.UserController()
+	controllers.PostController()
+	controllers.CommentController()
 
-	r := gin.Default()
-	routes.SetupRoutes(r)
-	r.Run(":8080")
+	server := &http.Server{
+		Addr: ":8089",
+	}
+
+	err := server.ListenAndServe()
+	if err != nil {
+		log.Fatal(err)
+	}
 }

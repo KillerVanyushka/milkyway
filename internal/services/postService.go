@@ -2,7 +2,7 @@ package services
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"log"
 	"milkyway/internal/models"
 	"net/http"
@@ -16,7 +16,7 @@ var posts = []models.Post{
 	{Id: 2, UserId: 1, Content: "Lorem ipsum dolor sit amet"},
 }
 
-func GetAllPosts(w http.ResponseWriter, r *http.Request) {
+func GetAllPosts(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json")
 
 	err := json.NewEncoder(w).Encode(posts)
@@ -49,7 +49,7 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var postCreate models.PostEdit
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -84,7 +84,7 @@ func UpdatePost(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -2,7 +2,7 @@ package services
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"log"
 	"milkyway/internal/models"
 	"net/http"
@@ -16,7 +16,7 @@ var users = []models.User{
 	{Id: 2, Username: "Robbin", PhoneNumber: "8-776-777-77-77", Age: 19, Gender: "Female", Email: "robbin@gmail.com", Password: "123456"},
 }
 
-func GetAllUsers(w http.ResponseWriter, r *http.Request) {
+func GetAllUsers(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json")
 
 	err := json.NewEncoder(w).Encode(users)
@@ -48,7 +48,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var userCreate models.UserEdit
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -88,7 +88,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Fatal(err)
 	}

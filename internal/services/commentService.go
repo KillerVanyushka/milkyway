@@ -2,7 +2,7 @@ package services
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"log"
 	"milkyway/internal/models"
 	"net/http"
@@ -61,7 +61,7 @@ func UpdateComment(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -95,7 +95,7 @@ func CreateComment(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var commentEdit models.CommentEdit
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Fatal(err)
 	}

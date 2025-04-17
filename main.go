@@ -6,8 +6,9 @@ import (
 )
 
 func main() {
-
 	r := gin.Default()
+
 	routes.SetupRoutes(r)
-	r.Run(":8080")
+
+	r.Run(":8089")
 }

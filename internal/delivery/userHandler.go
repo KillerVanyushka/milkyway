@@ -8,15 +8,19 @@ import (
 	"strconv"
 )
 
+func NewUserHandler(service *services.UserService) *UserHandler {
+	return &UserHandler{service: service}
+}
+
 type UserHandler struct {
 	service *services.UserService
 }
 
 func (h *UserHandler) GetAllUsers(c *gin.Context) {
-	users := h.service.GetAllUsers()
+	users, _ := h.service.GetAllUsers()
 	c.JSON(http.StatusOK, users)
 }
-func (h *UserHandler) GetUserByid(c *gin.Context) {
+func (h *UserHandler) GetUserById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"Ошибка": "Неверный айди пользователя"})
@@ -36,7 +40,10 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 	if err := c.BindJSON(&userCreate); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"Ошибка": "Неверное тело запроса"})
 	}
-	newUser := h.service.CreateUser(userCreate)
+	newUser, err := h.service.CreateUser(userCreate.Username, userCreate.PhoneNumber, userCreate.Age, userCreate.Gender, userCreate.Email, userCreate.Password)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"Ошибка": "Не получилось добавить"})
+	}
 	c.JSON(http.StatusOK, newUser)
 }
 
@@ -53,7 +60,7 @@ func (h *UserHandler) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	updatedUser, err := h.service.UpdateUser(id, userEdit)
+	updatedUser, err := h.service.UpdateUser(id, &userEdit)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"Ошибка": "Пользователь не найден"})
 		return

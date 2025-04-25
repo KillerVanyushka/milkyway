@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 	"milkyway/internal/auth"
 	"milkyway/internal/delivery"
+	"milkyway/internal/middleware"
 	"milkyway/internal/repository"
 	"milkyway/internal/services"
 )
@@ -16,6 +17,12 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 		users.POST("/login", auth.Login)
 		users.POST("/register", auth.Register)
 
+	}
+
+	protected := r.Group("api/v1")
+	protected.Use(middleware.AuthRequired())
+	{
+		protected.GET("me", auth.Me)
 	}
 	//userRepo := repository.NewUserRepository(db)
 	//

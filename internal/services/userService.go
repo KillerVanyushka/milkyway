@@ -4,7 +4,7 @@ import (
 	"milkyway/internal/models"
 )
 
-type UserRepo interface {
+type UserRepository interface {
 	GetAll() ([]models.User, error)
 	GetById(id int) (*models.User, error)
 	Create(user *models.User) error
@@ -13,10 +13,10 @@ type UserRepo interface {
 }
 
 type UserService struct {
-	repo UserRepo
+	repo UserRepository
 }
 
-func NewUserService(userRepo UserRepo) *UserService {
+func NewUserService(userRepo UserRepository) *UserService {
 	return &UserService{repo: userRepo}
 }
 

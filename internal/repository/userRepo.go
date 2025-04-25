@@ -9,7 +9,7 @@ type UserRepoImpl struct {
 	db *gorm.DB
 }
 
-func NewUserRepo(db *gorm.DB) *UserRepoImpl {
+func NewUserRepository(db *gorm.DB) *UserRepoImpl {
 	return &UserRepoImpl{db: db}
 }
 
